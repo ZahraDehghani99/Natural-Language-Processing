@@ -1,38 +1,24 @@
+import sys
 import numpy as np
 from hmm import *
- 
-initial_pro, A, B = [], [], []
+# from hmmlearn import hmm
 
-with open('hmm_data/model_init.txt', "r") as f:
-    mylist = [line.rstrip('\n') for line in f]
-    for i, line in enumerate(mylist):
-        if i in range(1, 2):
-            initial_pro.append([float(y) for y in line.split()])
-        if i in range(4, 10):  
-            A.append([float(y) for y in line.split()])
-        if i in range(12, 18):    
-            B.append([float(y) for y in line.split()])
+num_iteration = int(sys.argv[1])
+initial_model_addres = sys.argv[2]
+observations = sys.argv[3]
+result_addres = sys.argv[4]
+# print(num_iteration, initial_model_addres, observations, result_addres)
 
-initial_pro = np.asarray(initial_pro)
-A = np.asarray(A)
-B = np.asarray(B)
-# initial_pro = np.array([[1, 0]])
-# A = np.array([[0.6, 0.4], [0, 1]])
-# B = np.array([[0.8, 0.3], [0.2, 0.7]])
-# B = B.T
-print(f'initial_pro +>{initial_pro}')
-print(f'A => {A}')
-print(f'B=> {B}')
+initial_pro, A, B = read_init_file(initial_model_addres)
+observ = mapping_observation_multiple_seq(readFile(observations))
+# print(observ.shape)
+new_A, new_B, new_pi = baum_welch_multiple_seq(observ, A, B, initial_pro, num_iteration)
 
-x = "ACCDDDDFFCCCCBCFFFCCCCCEDADCCAEFCCCACDDFFCCDDFFCCD"
-# x = "AAB"
+print(f'new A => \n{new_A}')
+print(f'new A => \n{new_A.shape}')
+print(f'new B => \n{new_B.T}')
+print(f'new B => \n{new_B.shape}')
+print(f'new pi => \n{new_pi}')
+print(f'new pi => \n{new_pi.shape}')
 
-# a, b = forward(x, A, B, initial_pro)
-# print(a.shape)
-# print(b)
-a, b = backward(x, A, B, initial_pro)
-print(a.shape)
-print(b)
-# tebge slide pish berim
-# alpha = forward(O, a, b, initial_distribution)
-# print(alpha)
+
