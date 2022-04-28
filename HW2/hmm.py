@@ -1,19 +1,27 @@
 import numpy as np
 from numba import jit
 
-def mapping_observation_multiple_seq(observ_lst):
-  observation = np.zeros((len(observ_lst), len(observ_lst[0])))
-  observation = np.asarray(observation, dtype=np.int8)
-  mapping = {"A":0, "B":1, "C":2, "D":3, "E":4, "F":5}
-  for i in range(len(observ_lst)): 
-    for j in range(len(observ_lst[0])):
-      observation[i, j] = int(mapping.get(observ_lst[i][j]))
-  return observation    
+mapping = {"A":0, "B":1, "C":2, "D":3, "E":4, "F":5}
 
-@jit(nopython=True)
+def mapping_observation_multiple_seq(observ_lst):
+    observation = np.zeros((len(observ_lst), len(observ_lst[0])))
+    observation = np.asarray(observation, dtype=np.int8)
+    for i in range(len(observ_lst)): 
+        for j in range(len(observ_lst[0])):
+            observation[i, j] = int(mapping.get(observ_lst[i][j]))
+    return observation    
+
+
+def mapping_observation_single_seq(observ):
+    lst = []
+    for i in observ:
+        lst.append(mapping.get(i))
+    return np.array(lst)    
+    
+
 def forward(V, a, b, initial_distribution):
     b = b.T
-    T = V.shape[1]
+    T = V.shape[0]
     alpha = np.zeros((T, a.shape[0]))
     alpha[0, :] = initial_distribution * b[:, V[0]]
 
