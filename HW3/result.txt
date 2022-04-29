@@ -1,0 +1,15 @@
+viterbi algorithm without smoothing:
+POSTagging probability : 0.0 | accuracy : 12.40906256495531 %
+Wall time : 1966.0815966129303 seconds
+
+viterbi_log algorithm without smoothing
+POSTagging probability : -inf | accuracy : 15.192421687952763 %
+Wall time : 1873.9763913154602 seconds
+
+viterbi algorithm using smoothing (alpha : 0.001)
+POSTagging probability : 0.0 | accuracy : 12.40906256495531 %
+Wall time : 1693.227501630783 seconds
+
+viterbi algorithm using smoothing (alpha : 0.01)
+POSTagging probability : 0.0 | accuracy : 12.40906256495531 %
+Wall time : 2246.367805957794 seconds
